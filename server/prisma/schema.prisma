@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id       String @id @unique
+  id       String @id @unique @db.Char(36)
   username String @unique
   email    String @unique
   password String
@@ -21,14 +21,14 @@ model User {
 
 
 model Role {
-  id          String @id @unique
+  id          String @id @unique @db.Char(36)
   description String
   users       User[]
 }
 
 model Item {
-  id    String @id @unique 
-  name  String @unique
+  id    String @id @unique @db.Char(36)
+  name  String
 }
 
 
