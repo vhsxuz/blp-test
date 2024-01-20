@@ -20,7 +20,7 @@ export const postItem = async (req, res, next) => {
         data: {
             id: generateId(),
             name: name,
-        }``
+        }
     });
 
     return res.status(200).json({
@@ -49,8 +49,8 @@ export const getItem = async (req, res, next) => {
 };
 
 export const deleteItem = async (req, res, next) => {
-    const { itemId } = req.body;
-    const deleteditem = await prisma.item.delete({
+    const { itemId } = req.params;
+    const deletedItem = await prisma.item.delete({
         where: {
             id: itemId
         }
@@ -58,21 +58,26 @@ export const deleteItem = async (req, res, next) => {
 
     return res.status(200).json({
         success: true,
-        deleteditem: deleteditem
+        deletedItem: deletedItem
     });
 };
 
 export const patchItem = async (req, res, next) => {
-    const { itemId, itemData } = req.body; 
-    const updateditem = await prisma.item.update({
+    const { itemId } = req.params;
+    const { name } = req.body;
+    console.log(itemId);
+    console.log(req.body);
+    const updatedItem = await prisma.item.update({
         where: {
             id: itemId
         }, 
-        data: itemData
+        data: {
+            name: name
+        }
     }); 
 
     return res.status(200).json({
         success: true,
-        updateditem: updateditem
+        updatedItem: updatedItem
     });
-}; 
+};
