@@ -2,11 +2,13 @@ import jwt from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
-const jwtSecretKey = 'secret_key'; // Replace with your actual secret key
+const jwtSecretKey = 'secret_key';
 
 export const authenticateUser = async (req, res, next) => {
-    const token = req.cookies.jwtToken;
 
+    const token = req.headers['authorization'];
+    console.log(token)
+    
     if (!token) {
         return res.status(401).json({
             success: false,
@@ -15,7 +17,8 @@ export const authenticateUser = async (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, jwtSecretKey);
+        const decoded = jwt.verify(token.replace('Bearer ', ''), jwtSecretKey);
+        console.log(jwtSecretKey)
         const user = await prisma.user.findUnique({
             where: {
                 id: decoded.userId,
